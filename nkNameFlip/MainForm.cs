@@ -9,6 +9,7 @@ namespace nkNameFlip
     using System;
     using System.Collections.Generic;
     using System.Drawing;
+    using System.IO;
     using System.Windows.Forms;
 
     /// <summary>
@@ -32,7 +33,18 @@ namespace nkNameFlip
         /// <param name="e">Event arguments.</param>
         private void OnRootDirectoryBrowseButtonClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Set description
+            this.folderBrowserDialog.Description = "Set root directory";
+
+            // Show folder browser dialog
+            if (this.folderBrowserDialog.ShowDialog() == DialogResult.OK && this.folderBrowserDialog.SelectedPath.Length > 0)
+            {
+                // Set to text box
+                this.rootDirectoryTextBox.Text = this.folderBrowserDialog.SelectedPath;
+
+                // Load files
+                this.loadFilesButton.PerformClick();
+            }
         }
 
         /// <summary>
