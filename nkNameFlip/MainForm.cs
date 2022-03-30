@@ -91,7 +91,15 @@ namespace nkNameFlip
         /// <param name="e">Event arguments.</param>
         private void OnScriptProgramButtonClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Set open file dialog
+            this.openFileDialog.Title = "Open script/program";
+
+            // Show open file dialog
+            if (this.openFileDialog.ShowDialog() == DialogResult.OK && this.openFileDialog.FileName.Length > 0)
+            {
+                // Set text box
+                this.scriptProgramTextBox.Text = this.openFileDialog.FileName;
+            }
         }
 
         /// <summary>

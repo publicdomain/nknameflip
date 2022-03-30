@@ -272,6 +272,8 @@ namespace nkNameFlip
             this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.mainTableLayoutPanel.Size = new System.Drawing.Size(284, 396);
             this.mainTableLayoutPanel.TabIndex = 52;
             // 
@@ -339,7 +341,7 @@ namespace nkNameFlip
             this.rootDirectoryBrowseButton.Margin = new System.Windows.Forms.Padding(1);
             this.rootDirectoryBrowseButton.Name = "rootDirectoryBrowseButton";
             this.rootDirectoryBrowseButton.Size = new System.Drawing.Size(69, 28);
-            this.rootDirectoryBrowseButton.TabIndex = 1;
+            this.rootDirectoryBrowseButton.TabIndex = 2;
             this.rootDirectoryBrowseButton.Text = "&Browse";
             this.rootDirectoryBrowseButton.UseVisualStyleBackColor = true;
             this.rootDirectoryBrowseButton.Click += new System.EventHandler(this.OnRootDirectoryBrowseButtonClick);
@@ -352,7 +354,7 @@ namespace nkNameFlip
             this.rootDirectoryTextBox.Margin = new System.Windows.Forms.Padding(1);
             this.rootDirectoryTextBox.Name = "rootDirectoryTextBox";
             this.rootDirectoryTextBox.Size = new System.Drawing.Size(211, 22);
-            this.rootDirectoryTextBox.TabIndex = 2;
+            this.rootDirectoryTextBox.TabIndex = 1;
             // 
             // loadFilesButton
             // 
@@ -416,14 +418,14 @@ namespace nkNameFlip
             this.intermediateFileBrowseButton.Margin = new System.Windows.Forms.Padding(1);
             this.intermediateFileBrowseButton.Name = "intermediateFileBrowseButton";
             this.intermediateFileBrowseButton.Size = new System.Drawing.Size(69, 23);
-            this.intermediateFileBrowseButton.TabIndex = 12;
+            this.intermediateFileBrowseButton.TabIndex = 10;
             this.intermediateFileBrowseButton.Text = "&Browse";
             this.intermediateFileBrowseButton.UseVisualStyleBackColor = true;
             this.intermediateFileBrowseButton.Click += new System.EventHandler(this.OnIntermediateFileBrowseButtonClick);
             // 
             // openFileDialog
             // 
-            this.openFileDialog.FileName = "openFileDialog1";
+            this.openFileDialog.Filter = "All files|*.*";
             // 
             // folderBrowserDialog
             // 
