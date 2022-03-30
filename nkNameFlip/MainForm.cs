@@ -54,7 +54,34 @@ namespace nkNameFlip
         /// <param name="e">Event arguments.</param>
         private void OnLoadFilesButtonClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Folder check
+            if (this.folderBrowserDialog.SelectedPath.Length > 0 && Directory.Exists(this.folderBrowserDialog.SelectedPath))
+            {
+                // Prevent drawing
+                this.filesCheckedListBox.BeginUpdate();
+
+                // Clear list
+                this.filesCheckedListBox.Items.Clear();
+
+                // Browse subfolders
+                foreach (var subfolder in Directory.GetDirectories(this.folderBrowserDialog.SelectedPath, "*", SearchOption.TopDirectoryOnly))
+                {
+                    // Populate list
+                    foreach (string file in Directory.GetFiles(this.folderBrowserDialog.SelectedPath, "*", SearchOption.TopDirectoryOnly))
+                    {
+                        // Add current file
+                        this.filesCheckedListBox.Items.Add(file, true);
+                    }
+                }
+
+                // Resume drawing
+                this.filesCheckedListBox.EndUpdate();
+            }
+            else
+            {
+                // Advise user
+                MessageBox.Show("Invalid root directory.", "Load files", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -153,6 +180,16 @@ namespace nkNameFlip
         /// <param name="sender">Sender object.</param>
         /// <param name="e">Event arguments.</param>
         private void OnFilesCheckedListBoxItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            // TODO Add code
+        }
+
+        private void OnMainFormFormClosing(object sender, FormClosingEventArgs e)
+        {
+            // TODO Add code
+        }
+
+        private void OnMainFormLoad(object sender, EventArgs e)
         {
             // TODO Add code
         }
