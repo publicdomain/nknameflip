@@ -93,6 +93,7 @@ namespace nkNameFlip
         {
             // Set open file dialog
             this.openFileDialog.Title = "Open script/program";
+            this.openFileDialog.CheckFileExists = true;
 
             // Show open file dialog
             if (this.openFileDialog.ShowDialog() == DialogResult.OK && this.openFileDialog.FileName.Length > 0)
@@ -109,7 +110,16 @@ namespace nkNameFlip
         /// <param name="e">Event arguments.</param>
         private void OnIntermediateFileBrowseButtonClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Set open file dialog
+            this.openFileDialog.Title = "Set intermediate file";
+            this.openFileDialog.CheckFileExists = false;
+
+            // Show open file dialog
+            if (this.openFileDialog.ShowDialog() == DialogResult.OK && this.openFileDialog.FileName.Length > 0)
+            {
+                // Set text box
+                this.intermediateFileTextBox.Text = this.openFileDialog.FileName;
+            }
         }
 
         /// <summary>
