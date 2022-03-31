@@ -109,7 +109,7 @@ namespace nkNameFlip
         private void OnLoadFilesButtonClick(object sender, EventArgs e)
         {
             // Folder check
-            if (this.folderBrowserDialog.SelectedPath.Length > 0 && Directory.Exists(this.folderBrowserDialog.SelectedPath))
+            if (this.rootDirectoryTextBox.Text.Length > 0 && Directory.Exists(this.rootDirectoryTextBox.Text))
             {
                 // Prevent drawing
                 this.filesCheckedListBox.BeginUpdate();
@@ -118,10 +118,10 @@ namespace nkNameFlip
                 this.filesCheckedListBox.Items.Clear();
 
                 // Browse subfolders
-                foreach (var subfolder in Directory.GetDirectories(this.folderBrowserDialog.SelectedPath, "*", SearchOption.TopDirectoryOnly))
+                foreach (var subfolder in Directory.GetDirectories(this.rootDirectoryTextBox.Text, "*", SearchOption.TopDirectoryOnly))
                 {
                     // Populate list
-                    foreach (string file in Directory.GetFiles(this.folderBrowserDialog.SelectedPath, "*", SearchOption.TopDirectoryOnly))
+                    foreach (string file in Directory.GetFiles(this.rootDirectoryTextBox.Text, "*", SearchOption.TopDirectoryOnly))
                     {
                         // Add current file
                         this.filesCheckedListBox.Items.Add(file, true);
@@ -482,7 +482,7 @@ namespace nkNameFlip
             this.settingsData.BackupFiles = this.backupFilesToolStripMenuItem.Checked;
             this.settingsData.LoadFilesOnStart = this.loadFilesOnStartToolStripMenuItem.Checked;
 
-            // Save to disk
+            // Save to disk 
             this.SaveSettingsFile(this.settingsDataPath, this.settingsData);
         }
 
@@ -493,7 +493,18 @@ namespace nkNameFlip
         /// <param name="e">Event arguments.</param>
         private void OnMainFormLoad(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Load files
+            if (this.settingsData.LoadFilesOnStart && Directory.Exists(this.settingsData.RootDirectory))
+            {
+                // Hack Ensure root directory is set [Mono, Linux]
+                this.rootDirectoryTextBox.Text = this.settingsData.RootDirectory;
+
+                // Click load files button
+                this.loadFilesButton.PerformClick();
+            }
+
+            // Hack Topmost on start [DEBUG]
+            this.TopMost = this.settingsData.TopMost;
         }
 
         /// <summary>
