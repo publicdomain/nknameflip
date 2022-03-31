@@ -335,7 +335,21 @@ namespace nkNameFlip
         /// <param name="e">Event arguments.</param>
         private void OnFilesCheckedListBoxItemCheck(object sender, ItemCheckEventArgs e)
         {
-            // TODO Add code
+            // Update status
+            this.UpdateStatus(0);
+        }
+
+        /// <summary>
+        /// Updates the status.
+        /// </summary>
+        /// <param name="doneCount">Done count.</param>
+        private void UpdateStatus(int doneCount)
+        {
+            // Update total count
+            this.totalCountToolStripStatusLabel.Text = this.filesCheckedListBox.CheckedItems.Count.ToString();
+
+            // Reset done count
+            this.doneCountToolStripStatusLabel.Text = doneCount.ToString();
         }
 
         private void OnMainFormFormClosing(object sender, FormClosingEventArgs e)
