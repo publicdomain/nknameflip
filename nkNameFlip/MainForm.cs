@@ -8,6 +8,7 @@ namespace nkNameFlip
     // Directives
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Drawing;
     using System.IO;
     using System.Windows.Forms;
@@ -129,7 +130,132 @@ namespace nkNameFlip
         /// <param name="e">Event arguments.</param>
         private void OnProcessButtonClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            /* Checks */
+
+            // Check root directory
+            if (this.rootDirectoryTextBox.Text.Length == 0 || !Directory.Exists(this.rootDirectoryTextBox.Text))
+            {
+                // Advise user
+                MessageBox.Show("Please enter a valid root directory.", "Root directory", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                // Focus text box
+                this.rootDirectoryTextBox.Focus();
+
+                // Halt flow
+                return;
+            }
+
+            // Check there are files to work with
+            if (this.filesCheckedListBox.Items.Count == 0 || this.filesCheckedListBox.CheckedItems.Count == 0)
+            {
+                // Advise user
+                MessageBox.Show("Please add files to work with.", "Files", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                // Focus text box
+                this.loadFilesButton.Focus();
+
+                // Halt flow
+                return;
+            }
+
+            // Check script/program
+            if (this.scriptProgramTextBox.Text.Length == 0 || !File.Exists(this.scriptProgramTextBox.Text))
+            {
+                // Advise user
+                MessageBox.Show("Please enter a valid script/program file.", "Script / Program", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                // Focus text box
+                this.scriptProgramTextBox.Focus();
+
+                // Halt flow
+                return;
+            }
+
+            // Check intermediate file directory exists
+            if (this.intermediateFileTextBox.Text.Length == 0 || !Directory.Exists(Path.GetDirectoryName(this.intermediateFileTextBox.Text)))
+            {
+                // Advise user
+                MessageBox.Show("Invalid directory for internmediate file.", "Intermediate file", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                // Focus text box
+                this.intermediateFileTextBox.Focus();
+
+                // Halt flow
+                return;
+            }
+
+            // Check script and intermediate files are different
+            if (this.intermediateFileTextBox.Text == this.scriptProgramTextBox.Text)
+            {
+                // Advise user
+                MessageBox.Show("Script and internmediate file must be different.", "Same file", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                // Focus text box
+                this.intermediateFileTextBox.Focus();
+
+                // Halt flow
+                return;
+            }
+
+            /* Processing */
+
+            // Disable button
+            this.processButton.Enabled = false;
+
+            // Current checked file (for error log)
+            string currentCheckedFile = string.Empty;
+
+            // Error counter
+            int errors = 0;
+
+            try
+            {
+                // Iterate checked items / files
+                foreach (var checkedFile in this.filesCheckedListBox.CheckedItems)
+                {
+                    // Set current checked file
+                    currentCheckedFile = checkedFile.ToString();
+
+                    //#
+                    Debug.WriteLine(currentCheckedFile);
+
+                    // Backup current file
+                    if (this.backupFilesToolStripMenuItem.Checked)
+                    {
+                        // Set backup directory
+                        string backupdirectory = Path.Combine(Path.GetDirectoryName(currentCheckedFile), "backup");
+
+                        // Create backup directory
+                        Directory.CreateDirectory(backupdirectory);
+
+                        // Copy unix-timestamped file
+                        File.Copy(currentCheckedFile, Path.Combine(backupdirectory, $"{(int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds}-{Path.GetFileName(currentCheckedFile)}"), true);
+                    }
+
+                    // Copy file
+                    File.Copy(currentCheckedFile, this.intermediateFileTextBox.Text, true);
+
+                    // Run script/program and wait for it to finish
+                    Process.Start(this.scriptProgramTextBox.Text).WaitForExit();
+
+                    // Copy resulting file back
+                    File.Copy(this.intermediateFileTextBox.Text, currentCheckedFile, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Raise error cuont
+                errors++;
+
+                // Log error
+                File.AppendAllText("nkNameFlip-ErrorLog.txt", $"{Environment.NewLine}{Environment.NewLine}File: {currentCheckedFile}{Environment.NewLine}Script: {this.scriptProgramTextBox.Text}{Environment.NewLine}Intermediate file: {this.intermediateFileTextBox.Text}{Environment.NewLine}Message: {ex.Message}");
+            }
+
+            // Advise
+            MessageBox.Show($"Processing finished!{(errors > 0 ? $"{Environment.NewLine}{errors} errors." : string.Empty)}", "Done", MessageBoxButtons.OK, errors > 0 ? MessageBoxIcon.Error : MessageBoxIcon.Information);
+
+            // Enable button
+            this.processButton.Enabled = true;
         }
 
         /// <summary>
