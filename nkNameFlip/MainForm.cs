@@ -60,11 +60,24 @@ namespace nkNameFlip
             if (!File.Exists(this.settingsDataPath))
             {
                 // Create new settings file
-                //this.SaveSettingsFile(this.settingsDataPath, new SettingsData());
+                this.SaveSettingsFile(this.settingsDataPath, new SettingsData());
             }
 
             // Load settings from disk
-            //this.settingsData = this.LoadSettingsFile(this.settingsDataPath);
+            this.settingsData = this.LoadSettingsFile(this.settingsDataPath);
+
+            /* Set GUI */
+
+            // Text boxes
+            this.rootDirectoryTextBox.Text = this.settingsData.RootDirectory;
+            this.scriptProgramTextBox.Text = this.settingsData.ScriptProgram;
+            this.intermediateFileTextBox.Text = this.settingsData.IntermediateFile;
+
+            // Options
+            this.alwaysOnTopToolStripMenuItem.Checked = this.settingsData.TopMost;
+            this.checkOnClickToolStripMenuItem.Checked = this.settingsData.CheckOnClick;
+            this.backupFilesToolStripMenuItem.Checked = this.settingsData.BackupFiles;
+            this.loadFilesOnStartToolStripMenuItem.Checked = this.settingsData.LoadFilesOnStart;
         }
 
         /// <summary>
@@ -456,7 +469,21 @@ namespace nkNameFlip
         /// <param name="e">Event arguments.</param>
         private void OnMainFormFormClosing(object sender, FormClosingEventArgs e)
         {
-            // TODO Add code
+            /* Set settings data from GUI */
+
+            // Text boxes
+            this.settingsData.RootDirectory = this.rootDirectoryTextBox.Text;
+            this.settingsData.ScriptProgram = this.scriptProgramTextBox.Text;
+            this.settingsData.IntermediateFile = this.intermediateFileTextBox.Text;
+
+            // Options
+            this.settingsData.TopMost = this.alwaysOnTopToolStripMenuItem.Checked;
+            this.settingsData.CheckOnClick = this.checkOnClickToolStripMenuItem.Checked;
+            this.settingsData.BackupFiles = this.backupFilesToolStripMenuItem.Checked;
+            this.settingsData.LoadFilesOnStart = this.loadFilesOnStartToolStripMenuItem.Checked;
+
+            // Save to disk
+            this.SaveSettingsFile(this.settingsDataPath, this.settingsData);
         }
 
         /// <summary>
