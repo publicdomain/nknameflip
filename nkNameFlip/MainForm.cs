@@ -216,9 +216,6 @@ namespace nkNameFlip
                     // Set current checked file
                     currentCheckedFile = checkedFile.ToString();
 
-                    //#
-                    Debug.WriteLine(currentCheckedFile);
-
                     // Backup current file
                     if (this.backupFilesToolStripMenuItem.Checked)
                     {
@@ -250,6 +247,9 @@ namespace nkNameFlip
                 // Log error
                 File.AppendAllText("nkNameFlip-ErrorLog.txt", $"{Environment.NewLine}{Environment.NewLine}File: {currentCheckedFile}{Environment.NewLine}Script: {this.scriptProgramTextBox.Text}{Environment.NewLine}Intermediate file: {this.intermediateFileTextBox.Text}{Environment.NewLine}Message: {ex.Message}");
             }
+
+            // Update status
+            this.UpdateStatus(this.filesCheckedListBox.CheckedItems.Count - errors);
 
             // Advise
             MessageBox.Show($"Processing finished!{(errors > 0 ? $"{Environment.NewLine}{errors} errors." : string.Empty)}", "Done", MessageBoxButtons.OK, errors > 0 ? MessageBoxIcon.Error : MessageBoxIcon.Information);
@@ -352,11 +352,21 @@ namespace nkNameFlip
             this.doneCountToolStripStatusLabel.Text = doneCount.ToString();
         }
 
+        /// <summary>
+        /// Ons the main form form closing.
+        /// </summary>
+        /// <param name="sender">Sender object.</param>
+        /// <param name="e">Event arguments.</param>
         private void OnMainFormFormClosing(object sender, FormClosingEventArgs e)
         {
             // TODO Add code
         }
 
+        /// <summary>
+        /// Ons the main form load.
+        /// </summary>
+        /// <param name="sender">Sender object.</param>
+        /// <param name="e">Event arguments.</param>
         private void OnMainFormLoad(object sender, EventArgs e)
         {
             // TODO Add code
