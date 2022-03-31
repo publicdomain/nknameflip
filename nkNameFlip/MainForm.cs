@@ -276,13 +276,25 @@ namespace nkNameFlip
         }
 
         /// <summary>
-        // Handles the new tool strip menu item1 click.
+        // Handles the new tool strip menu item click.
         /// </summary>
         /// <param name="sender">Sender object.</param>
         /// <param name="e">Event arguments.</param>
-        private void OnNewToolStripMenuItem1Click(object sender, EventArgs e)
+        private void OnNewToolStripMenuItemClick(object sender, EventArgs e)
         {
-            // TODO Add code
+            // Clear text boxes
+            this.rootDirectoryTextBox.Clear();
+            this.scriptProgramTextBox.Clear();
+            this.intermediateFileTextBox.Clear();
+
+            // Check checked list box
+            this.filesCheckedListBox.Items.Clear();
+
+            // Update status
+            this.UpdateStatus(0);
+
+            // Focus root directory text box
+            this.rootDirectoryTextBox.Focus();
         }
 
         /// <summary>
