@@ -326,6 +326,9 @@ namespace nkNameFlip
 
             // Set topmost by check box
             this.TopMost = this.alwaysOnTopToolStripMenuItem.Checked;
+
+            // Toggle check on click
+            this.filesCheckedListBox.CheckOnClick = this.checkOnClickToolStripMenuItem.Checked;
         }
 
         /// <summary>
